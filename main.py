@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 import models, schemas, database
 import auth
@@ -7,11 +7,6 @@ from fastapi.security import OAuth2PasswordRequestForm
 models.Base.metadata.create_all(bind=database.engine)
 
 app = FastAPI()
-
-@app.get("/")
-def read_root():
-    return {"message": "User Management API is Live!"}
-
 # Our first "Signup" logic 
 @app.post("/users/", response_model=schemas.UserResponse)
 def create_user(user: schemas.UserCreate, db: Session = Depends(database.get_db)):
@@ -41,3 +36,39 @@ def login(form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
     access_token = auth.create_access_token(data={"sub": user.email})
     
     return {"access_token": access_token, "token_type": "bearer"}
+    
+@app.get("/users/me", response_model=schemas.UserResponse)
+def read_user_me(current_user: models.User = Depends(auth.get_current_user)):
+    """
+    Retrieve the profile of the currently authenticated user.
+    """
+    return current_user
+
+
+
+@app.put("/users/me", response_model=schemas.UserResponse)
+def update_user_profile(
+    user_update: schemas.UserUpdate, 
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
+    # Update email if provided
+    if user_update.email:
+        current_user.email = user_update.email
+    
+    # Update and hash password if provided
+    if user_update.password:
+        current_user.hashed_password = auth.get_password_hash(user_update.password)
+    
+    db.commit()
+    db.refresh(current_user)
+    return current_user
+
+@app.delete("/users/me", status_code=status.HTTP_204_NO_CONTENT)
+def delete_user_account(
+    db: Session = Depends(database.get_db),
+    current_user: models.User = Depends(auth.get_current_user)
+):
+    db.delete(current_user)
+    db.commit()
+    return None
