@@ -3,8 +3,8 @@
 A secure, production-grade Backend API built with **FastAPI**, **PostgreSQL**, and **JWT Authentication**. This project demonstrates modern backend architecture, focusing on security, scalability, and clean data validation.
 
 ## 🛠️ Technical Stack
-* **Framework:** FastAPI (Asynchronous Python)
-* **Database:** PostgreSQL (Cloud-hosted via Neon/Supabase)
+* **Framework:** FastAPI (Asynchronous Python).
+* **Database:** PostgreSQL (Cloud-hosted via Neon/Supabase).
 * **ORM:** SQLAlchemy (Object-Relational Mapping)
 * **Security:** JWT (JSON Web Tokens) & Bcrypt password hashing
 * **Validation:** Pydantic (Strict typing and schemas)
@@ -17,6 +17,7 @@ A secure, production-grade Backend API built with **FastAPI**, **PostgreSQL**, a
 * **Interactive Docs:** Integrated Swagger UI for testing endpoints at `/docs`.
 
 
+##iris
 
 ## 📡 API Endpoints
 
