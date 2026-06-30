@@ -6,6 +6,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 # This line creates the tables in your Cloud PostgreSQL automatically
 models.Base.metadata.create_all(bind=database.engine)
 
+#test commit
 app = FastAPI()
 # Our first "Signup" logic 
 @app.post("/users/", response_model=schemas.UserResponse)
