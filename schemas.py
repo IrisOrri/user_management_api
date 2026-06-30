@@ -18,4 +18,8 @@ class UserUpdate(BaseModel):
     email: Optional[EmailStr] = None
     password: Optional[str] = None
 
+class Customer(BaseModel):
+    email: Optional[EmailStr] = None
+    password: Optional[str] = None
+
 
